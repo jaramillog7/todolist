@@ -1,0 +1,122 @@
+
+/* Estilos generales */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    background-color: #d9bd53;
+    font-family: Arial, sans-serif;
+    color: #44485f;
+}
+/* Contenedor principal */
+
+.todo {
+    width: 90%;
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 60px 0;
+    text-align: center;
+}
+
+.todo__titulo {
+    color: white;
+    font-size: 32px;
+    margin-bottom: 40px;
+}
+/* Formulario para agregar tareas */
+
+.todo__formulario {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 40px;
+}
+
+.todo__formulario label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+}
+
+.todo__formulario input {
+    flex: 1;
+    min-width: 0;
+    padding: 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.todo__formulario button {
+    width: 50px;
+    height: 50px;
+    border: none;
+    border-radius: 50%;
+    background-color: white;
+    color: #d9bd53;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+}
+/* Lista de tareas */
+
+.todo__lista {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    list-style: none;
+}
+
+.todo__lista li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px;
+    background-color: white;
+    border-radius: 5px;
+    text-align: left;
+}
+
+.todo__resumen {
+    margin-top: 30px;
+    color: white;
+    font-size: 17px;
+}
+/* Diseño para celulares */
+
+@media (max-width: 480px) {
+    .todo {
+        width: 92%;
+        padding: 35px 0;
+    }
+
+    .todo__titulo {
+        font-size: 25px;
+        margin-bottom: 30px;
+    }
+
+    .todo__formulario {
+        gap: 10px;
+    }
+
+    .todo__formulario input {
+        padding: 12px;
+    }
+
+    .todo__formulario button {
+        width: 45px;
+        height: 45px;
+        flex-shrink: 0;
+    }
+}
