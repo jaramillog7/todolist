@@ -1,11 +1,53 @@
+
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Mi lista de tareas</title>
+
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="js/script.js" defer></script>
 </head>
+
 <body>
-    
+
+    <main class="todo">
+
+        <h1 class="todo__titulo">
+            Mi lista de tareas
+        </h1>
+
+        <form id="formulario-tarea" class="todo__formulario">
+
+            <label for="nueva-tarea">
+                Nueva tarea
+            </label>
+
+            <input
+                type="text"
+                id="nueva-tarea"
+                name="tarea"
+                placeholder="Escribe aquí tu tarea..."
+                maxlength="100"
+                required
+            >
+
+            <button type="submit" id="boton-agregar">
+                Agregar
+            </button>
+
+        </form>
+
+        <ul id="lista-tareas" class="todo__lista">
+        </ul>
+
+        <p id="resumen-tareas" class="todo__resumen">
+            Pendientes: 0 | Completadas: 0
+        </p>
+
+    </main>
+
 </body>
 </html>
