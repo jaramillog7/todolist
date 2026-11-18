@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact List</title>
+    <link rel="stylesheet" href="./styles.css">
+    <script src="./script.js" defer></script>
+</head>
+<body>
+    <main class="contact-container">
+
+        <div class="contact-icon-wrapper">
+            <img
+                src="./iimg/icono-contacto.png"
+                alt="Contact icon"
+                class="contact-icon"
+            >
+        </div>
+
+        <h1>Contact List</h1>
+
+        <form id="contactForm">
+            <input
+                type="text"
+                id="firstName"
+                placeholder="Input your name"
+                required
+            >
+
+            <input
+                type="text"
+                id="lastName"
+                placeholder="Input your lastname"
+                required
+            >
+
+            <input
+                type="tel"
+                id="phone"
+                placeholder="Input your phone"
+                required
+            >
+
+            <input
+                type="text"
+                id="city"
+                placeholder="Input your city"
+                required
+            >
+
+            <input
+                type="text"
+                id="address"
+                placeholder="Input your address"
+                required
+            >
+
+            <div class="gender-options">
+                <label>
+                    <input
+                        type="radio"
+                        name="gender"
+                        value="Female"
+                        required
+                    >
+                    Female
+                </label>
+
+                <label>
+                    <input
+                        type="radio"
+                        name="gender"
+                        value="Male"
+                    >
+                    Male
+                </label>
+            </div>
+
+            <button type="submit" id="addButton">ADD</button>
+        </form>
+
+        <p id="message" role="status"></p>
+
+        <section id="contactsSection" hidden>
+            <h2>Saved Contacts</h2>
+            <div id="contactsList"></div>
+        </section>
+
+    </main>
+</body>
+</html>
