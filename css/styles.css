@@ -9,23 +9,30 @@
 
 body {
     min-height: 100vh;
+    min-height: 100dvh;
     background-color: #d9bd53;
     font-family: Arial, Helvetica, sans-serif;
     color: #44485f;
 }
-/* Contenedor principal */
 
 .todo {
-    width: min(92%, 600px);
-    margin: 0 auto;
-    padding: 0 0 36px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: safe center;
+    width: min(calc(100% - 32px), 600px);
+    min-height: 100vh;
+    min-height: 100dvh;
+    margin-inline: auto;
+    padding-block: clamp(14px, 2.5vh, 26px) 24px;
     text-align: center;
 }
 
 .todo__ilustracion {
-    width: 220px;
-    height: 300px;
-    margin: 0 auto 90px;
+    flex: 0 0 auto;
+    width: clamp(132px, 18vw, 200px);
+    aspect-ratio: 11 / 15;
+    margin-bottom: clamp(18px, 3.5vh, 34px);
 }
 
 .todo__ilustracion svg {
@@ -36,19 +43,19 @@ body {
 
 .todo__titulo {
     color: white;
-    font-size: clamp(30px, 4vw, 48px);
+    width: 100%;
+    font-size: clamp(27px, 4vw, 46px);
     line-height: 1.15;
     letter-spacing: 1px;
-    margin-bottom: 64px;
+    margin-bottom: clamp(22px, 3.5vh, 36px);
 }
-/* Formulario para agregar tareas */
 
 .todo__formulario {
     display: flex;
     align-items: center;
-    gap: 24px;
-    width: min(86%, 500px);
-    margin: 0 auto 66px;
+    gap: clamp(10px, 2vw, 20px);
+    width: min(100%, 500px);
+    margin: 0 0 clamp(22px, 3.5vh, 36px);
 }
 
 .todo__formulario label {
@@ -66,7 +73,7 @@ body {
 .todo__formulario input {
     flex: 1;
     min-width: 0;
-    padding: 12px 4px;
+    padding: 10px 4px;
     border: 0;
     border-bottom: 2px solid transparent;
     border-radius: 0;
@@ -86,14 +93,14 @@ body {
 }
 
 .todo__formulario button {
-    flex: 0 0 60px;
-    width: 60px;
-    height: 60px;
+    flex: 0 0 clamp(48px, 5vw, 58px);
+    width: clamp(48px, 5vw, 58px);
+    height: clamp(48px, 5vw, 58px);
     border: none;
     border-radius: 50%;
     background-color: #f7f7f7;
     color: #d9bd53;
-    font-size: 42px;
+    font-size: clamp(34px, 4vw, 40px);
     font-weight: 400;
     line-height: 1;
     cursor: pointer;
@@ -105,11 +112,11 @@ body {
     outline: 3px solid #44485f;
     outline-offset: 3px;
 }
-/* Lista de tareas */
 
 .todo__lista {
     display: flex;
     flex-direction: column;
+    width: 100%;
     gap: 10px;
     list-style: none;
 }
@@ -118,8 +125,8 @@ body {
     display: flex;
     align-items: center;
     gap: 12px;
-    min-height: 78px;
-    padding: 14px 20px;
+    min-height: 68px;
+    padding: 12px clamp(12px, 2vw, 18px);
     background-color: white;
     border-radius: 7px;
     text-align: left;
@@ -137,7 +144,7 @@ body {
     flex: 1;
     min-width: 0;
     overflow-wrap: anywhere;
-    font-size: 27px;
+    font-size: clamp(18px, 2.2vw, 25px);
     font-weight: 700;
     letter-spacing: 0.5px;
 }
@@ -172,55 +179,60 @@ body {
 }
 
 .todo__resumen {
-    margin-top: 34px;
+    width: 100%;
+    margin-top: clamp(18px, 3vh, 28px);
     color: #fff0a0;
-    font-size: 30px;
+    font-size: clamp(18px, 2.5vw, 28px);
     letter-spacing: 0.5px;
+    overflow-wrap: anywhere;
 }
-/* Diseño para celulares */
 
 @media (max-width: 480px) {
-    .todo {
-        width: 92%;
-        padding-bottom: 28px;
-    }
-
     .todo__ilustracion {
-        width: 170px;
-        height: 232px;
-        margin-bottom: 42px;
+        width: clamp(126px, 38vw, 164px);
     }
 
     .todo__titulo {
-        font-size: clamp(27px, 8vw, 36px);
-        margin-bottom: 40px;
+        font-size: clamp(25px, 7.8vw, 34px);
     }
 
     .todo__formulario {
-        width: 100%;
-        gap: 12px;
-        margin-bottom: 40px;
+        gap: 10px;
     }
 
     .todo__formulario input {
-        font-size: 21px;
+        font-size: clamp(18px, 5.5vw, 22px);
     }
 
     .todo__formulario button {
-        flex-basis: 50px;
-        width: 50px;
-        height: 50px;
-        font-size: 36px;
+        flex-basis: 48px;
+        width: 48px;
+        height: 48px;
+        font-size: 34px;
     }
 
     .todo__lista li {
-        gap: 9px;
-        min-height: 66px;
-        padding: 11px 12px;
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr);
+        gap: 8px;
+        min-height: 60px;
+        padding: 10px;
+    }
+
+    .todo__lista input[type="checkbox"] {
+        grid-column: 1;
+        grid-row: 1;
     }
 
     .todo__descripcion {
-        font-size: 19px;
+        grid-column: 2;
+        grid-row: 1;
+        font-size: clamp(16px, 4.8vw, 19px);
+    }
+
+    .todo__campo-edicion {
+        grid-column: 2;
+        grid-row: 1;
     }
 
     .todo__editar,
@@ -229,16 +241,27 @@ body {
         font-size: 12px;
     }
 
+    .todo__editar {
+        grid-column: 1;
+        grid-row: 2;
+        justify-self: start;
+    }
+
+    .todo__cancelar {
+        grid-column: 2;
+        grid-row: 2;
+        justify-self: start;
+    }
+
     .todo__eliminar {
+        grid-column: 2;
+        grid-row: 2;
+        justify-self: end;
+        margin-left: 0;
         padding: 7px 8px;
         font-size: 13px;
     }
-
-    .todo__resumen {
-        font-size: clamp(18px, 5.7vw, 25px);
-    }
 }
-/* Botón para eliminar tareas */
 
 .todo__eliminar {
     margin-left: auto;
