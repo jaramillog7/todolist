@@ -10,31 +10,45 @@
 body {
     min-height: 100vh;
     background-color: #d9bd53;
-    font-family: Arial, sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
     color: #44485f;
 }
 /* Contenedor principal */
 
 .todo {
-    width: 90%;
-    max-width: 500px;
+    width: min(92%, 600px);
     margin: 0 auto;
-    padding: 60px 0;
+    padding: 0 0 36px;
     text-align: center;
+}
+
+.todo__ilustracion {
+    width: 220px;
+    height: 300px;
+    margin: 0 auto 90px;
+}
+
+.todo__ilustracion svg {
+    display: block;
+    width: 100%;
+    height: 100%;
 }
 
 .todo__titulo {
     color: white;
-    font-size: 32px;
-    margin-bottom: 40px;
+    font-size: clamp(30px, 4vw, 48px);
+    line-height: 1.15;
+    letter-spacing: 1px;
+    margin-bottom: 64px;
 }
 /* Formulario para agregar tareas */
 
 .todo__formulario {
     display: flex;
     align-items: center;
-    gap: 15px;
-    margin-bottom: 40px;
+    gap: 24px;
+    width: min(86%, 500px);
+    margin: 0 auto 66px;
 }
 
 .todo__formulario label {
@@ -52,22 +66,44 @@ body {
 .todo__formulario input {
     flex: 1;
     min-width: 0;
-    padding: 15px;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
+    padding: 12px 4px;
+    border: 0;
+    border-bottom: 2px solid transparent;
+    border-radius: 0;
+    outline: none;
+    background: transparent;
+    color: white;
+    font-size: clamp(21px, 3vw, 34px);
+}
+
+.todo__formulario input::placeholder {
+    color: #f6e78b;
+    opacity: 1;
+}
+
+.todo__formulario input:focus-visible {
+    border-bottom-color: #fff;
 }
 
 .todo__formulario button {
-    width: 50px;
-    height: 50px;
+    flex: 0 0 60px;
+    width: 60px;
+    height: 60px;
     border: none;
     border-radius: 50%;
-    background-color: white;
+    background-color: #f7f7f7;
     color: #d9bd53;
-    font-size: 18px;
-    font-weight: bold;
+    font-size: 42px;
+    font-weight: 400;
+    line-height: 1;
     cursor: pointer;
+}
+
+.todo__formulario button:focus-visible,
+.todo__lista button:focus-visible,
+.todo__lista input:focus-visible {
+    outline: 3px solid #44485f;
+    outline-offset: 3px;
 }
 /* Lista de tareas */
 
@@ -81,16 +117,33 @@ body {
 .todo__lista li {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 15px;
+    gap: 12px;
+    min-height: 78px;
+    padding: 14px 20px;
     background-color: white;
-    border-radius: 5px;
+    border-radius: 7px;
     text-align: left;
 }
 
 .todo__lista input[type="checkbox"] {
+    width: 19px;
+    height: 19px;
     flex: 0 0 auto;
     cursor: pointer;
+    accent-color: #1677e8;
+}
+
+.todo__descripcion {
+    flex: 1;
+    min-width: 0;
+    overflow-wrap: anywhere;
+    font-size: 27px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.todo__lista button {
+    font-family: inherit;
 }
 
 .todo__campo-edicion {
@@ -104,11 +157,12 @@ body {
 
 .todo__editar,
 .todo__cancelar {
-    padding: 6px 8px;
-    border: 0;
-    border-radius: 4px;
-    background-color: #f2f2f2;
-    color: #44485f;
+    padding: 6px 7px;
+    border: 1px solid #e6e6e6;
+    border-radius: 5px;
+    background-color: #f7f7f7;
+    color: #55596d;
+    font-size: 13px;
     cursor: pointer;
 }
 
@@ -118,35 +172,70 @@ body {
 }
 
 .todo__resumen {
-    margin-top: 30px;
-    color: white;
-    font-size: 17px;
+    margin-top: 34px;
+    color: #fff0a0;
+    font-size: 30px;
+    letter-spacing: 0.5px;
 }
 /* Diseño para celulares */
 
 @media (max-width: 480px) {
     .todo {
         width: 92%;
-        padding: 35px 0;
+        padding-bottom: 28px;
+    }
+
+    .todo__ilustracion {
+        width: 170px;
+        height: 232px;
+        margin-bottom: 42px;
     }
 
     .todo__titulo {
-        font-size: 25px;
-        margin-bottom: 30px;
+        font-size: clamp(27px, 8vw, 36px);
+        margin-bottom: 40px;
     }
 
     .todo__formulario {
-        gap: 10px;
+        width: 100%;
+        gap: 12px;
+        margin-bottom: 40px;
     }
 
     .todo__formulario input {
-        padding: 12px;
+        font-size: 21px;
     }
 
     .todo__formulario button {
-        width: 45px;
-        height: 45px;
-        flex-shrink: 0;
+        flex-basis: 50px;
+        width: 50px;
+        height: 50px;
+        font-size: 36px;
+    }
+
+    .todo__lista li {
+        gap: 9px;
+        min-height: 66px;
+        padding: 11px 12px;
+    }
+
+    .todo__descripcion {
+        font-size: 19px;
+    }
+
+    .todo__editar,
+    .todo__cancelar {
+        padding: 6px 5px;
+        font-size: 12px;
+    }
+
+    .todo__eliminar {
+        padding: 7px 8px;
+        font-size: 13px;
+    }
+
+    .todo__resumen {
+        font-size: clamp(18px, 5.7vw, 25px);
     }
 }
 /* Botón para eliminar tareas */

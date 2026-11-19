@@ -15,9 +15,24 @@
 
     <main class="todo">
 
-        <h1 class="todo__titulo">
-            Mi lista de tareas
-        </h1>
+        <div class="todo__ilustracion" aria-hidden="true">
+            <svg viewBox="0 0 220 300" role="presentation" focusable="false">
+                <rect x="10" y="28" width="178" height="258" rx="13" fill="#f4b83f" stroke="#111" stroke-width="8"/>
+                <path d="M77 20h18V9a8 8 0 0 1 8-8h25a8 8 0 0 1 8 8v11h18a8 8 0 0 1 8 8v17H69V28a8 8 0 0 1 8-8Z" fill="#becbd3" stroke="#111" stroke-width="8" stroke-linejoin="round"/>
+                <rect x="28" y="48" width="143" height="220" rx="5" fill="#fff" stroke="#111" stroke-width="8"/>
+                <path d="M54 79h37v42H54zM54 151h37v42H54zM54 222h37v37H54z" fill="#59b89b" stroke="#111" stroke-width="8" stroke-linejoin="round"/>
+                <path d="m61 99 8 9 14-18m-22 78 8 9 14-18m-22 75 8 9 14-18" fill="none" stroke="#111" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M115 88h48m-48 19h31M115 160h39m-39 19h31" stroke="#111" stroke-width="8" stroke-linecap="round"/>
+                <g transform="rotate(33 151 181)">
+                    <path d="M143 93h23v156l-11.5 27L143 249z" fill="#ff7180" stroke="#111" stroke-width="8" stroke-linejoin="round"/>
+                    <path d="M143 112h23M143 249h23" stroke="#111" stroke-width="8"/>
+                    <path d="m143 249 11.5 27L166 249" fill="#71818a" stroke="#111" stroke-width="8" stroke-linejoin="round"/>
+                    <path d="M143 93a11.5 11.5 0 0 1 23 0v11h-23z" fill="#9eafb9" stroke="#111" stroke-width="8"/>
+                </g>
+            </svg>
+        </div>
+
+        <h1 class="todo__titulo">javascript - to do list</h1>
 
         <form id="formulario-tarea" class="todo__formulario">
 
@@ -34,8 +49,8 @@
                 required
             >
 
-            <button type="submit" id="boton-agregar">
-                Agregar
+            <button type="submit" id="boton-agregar" aria-label="Agregar tarea">
+                +
             </button>
 
         </form>
