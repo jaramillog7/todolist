@@ -6,6 +6,7 @@ const campoTarea = document.getElementById("nueva-tarea");
 const listaTareas = document.getElementById("lista-tareas");
 const claveAlmacenamiento = "todolist-tareas";
 
+let tareasNecesitanMigracion = false;
 let tareas = cargarTareas();
 
 function cargarTareas() {
@@ -19,7 +20,17 @@ function cargarTareas() {
 
         return tareasGuardadas
             .filter((tarea) => tarea && typeof tarea.id === "string" && typeof tarea.texto === "string" && tarea.texto.trim() !== "")
-            .map((tarea) => ({ id: tarea.id, texto: tarea.texto }));
+            .map((tarea) => {
+                if (typeof tarea.completada !== "boolean") {
+                    tareasNecesitanMigracion = true;
+                }
+
+                return {
+                    id: tarea.id,
+                    texto: tarea.texto,
+                    completada: tarea.completada === true
+                };
+            });
     } catch (error) {
         return [];
     }
@@ -38,6 +49,17 @@ function crearElementoTarea(tarea) {
 
     const descripcion = document.createElement("span");
     descripcion.textContent = tarea.texto;
+    if (tarea.completada) {
+        descripcion.classList.add("todo__descripcion--completada");
+    }
+
+    const casillaCompletada = document.createElement("input");
+    casillaCompletada.type = "checkbox";
+    casillaCompletada.checked = tarea.completada;
+    casillaCompletada.setAttribute("aria-label", `Marcar como completada: ${tarea.texto}`);
+    casillaCompletada.addEventListener("change", function () {
+        cambiarEstadoTarea(tarea.id, casillaCompletada.checked, descripcion);
+    });
 
     const botonEliminar = document.createElement("button");
     botonEliminar.type = "button";
@@ -47,10 +69,22 @@ function crearElementoTarea(tarea) {
         eliminarTarea(tarea.id, nuevaTarea);
     });
 
+    nuevaTarea.appendChild(casillaCompletada);
     nuevaTarea.appendChild(descripcion);
     nuevaTarea.appendChild(botonEliminar);
 
     return nuevaTarea;
+}
+
+function cambiarEstadoTarea(id, completada, descripcion) {
+    const tarea = tareas.find((elemento) => elemento.id === id);
+    if (!tarea) {
+        return;
+    }
+
+    tarea.completada = completada;
+    descripcion.classList.toggle("todo__descripcion--completada", completada);
+    guardarTareas();
 }
 
 function renderizarTareas() {
@@ -81,7 +115,7 @@ function agregarTarea(evento) {
         return;
     }
 
-    tareas.push({ id: crearId(), texto });
+    tareas.push({ id: crearId(), texto, completada: false });
     guardarTareas();
     listaTareas.appendChild(crearElementoTarea(tareas[tareas.length - 1]));
 
@@ -93,6 +127,9 @@ function agregarTarea(evento) {
 /* Evento del formulario */
 
 formulario.addEventListener("submit", agregarTarea);
+if (tareasNecesitanMigracion) {
+    guardarTareas();
+}
 renderizarTareas();
 
 function crearId() {
