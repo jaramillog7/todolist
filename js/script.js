@@ -48,6 +48,7 @@ function crearElementoTarea(tarea) {
     const nuevaTarea = document.createElement("li");
 
     const descripcion = document.createElement("span");
+    descripcion.classList.add("todo__descripcion");
     descripcion.textContent = tarea.texto;
     if (tarea.completada) {
         descripcion.classList.add("todo__descripcion--completada");
@@ -61,6 +62,15 @@ function crearElementoTarea(tarea) {
         cambiarEstadoTarea(tarea.id, casillaCompletada.checked, descripcion);
     });
 
+    const botonEditar = document.createElement("button");
+    botonEditar.type = "button";
+    botonEditar.textContent = "Editar";
+    botonEditar.classList.add("todo__editar");
+    botonEditar.setAttribute("aria-label", `Editar tarea: ${tarea.texto}`);
+    botonEditar.addEventListener("click", function () {
+        iniciarEdicion(tarea.id, nuevaTarea);
+    });
+
     const botonEliminar = document.createElement("button");
     botonEliminar.type = "button";
     botonEliminar.textContent = "Eliminar";
@@ -71,9 +81,74 @@ function crearElementoTarea(tarea) {
 
     nuevaTarea.appendChild(casillaCompletada);
     nuevaTarea.appendChild(descripcion);
+    nuevaTarea.appendChild(botonEditar);
     nuevaTarea.appendChild(botonEliminar);
 
     return nuevaTarea;
+}
+
+function iniciarEdicion(id, elemento) {
+    const tarea = tareas.find((elementoTarea) => elementoTarea.id === id);
+    if (!tarea) {
+        return;
+    }
+
+    const campoEdicion = document.createElement("input");
+    campoEdicion.type = "text";
+    campoEdicion.value = tarea.texto;
+    campoEdicion.maxLength = 100;
+    campoEdicion.classList.add("todo__campo-edicion");
+    campoEdicion.setAttribute("aria-label", `Editar tarea: ${tarea.texto}`);
+
+    const descripcion = elemento.querySelector(".todo__descripcion");
+    descripcion.replaceWith(campoEdicion);
+
+    const botonEditar = elemento.querySelector(".todo__editar");
+    const botonGuardar = document.createElement("button");
+    botonGuardar.type = "button";
+    botonGuardar.textContent = "Guardar";
+    botonGuardar.classList.add("todo__editar");
+    botonGuardar.setAttribute("aria-label", `Guardar tarea: ${tarea.texto}`);
+    botonGuardar.addEventListener("click", () => guardarEdicion(id, campoEdicion));
+    botonEditar.replaceWith(botonGuardar);
+
+    const botonCancelar = document.createElement("button");
+    botonCancelar.type = "button";
+    botonCancelar.textContent = "Cancelar";
+    botonCancelar.classList.add("todo__cancelar");
+    botonCancelar.addEventListener("click", () => renderizarTareas());
+    botonGuardar.after(botonCancelar);
+
+    campoEdicion.addEventListener("keydown", (evento) => {
+        if (evento.key === "Enter") {
+            guardarEdicion(id, campoEdicion);
+        } else if (evento.key === "Escape") {
+            renderizarTareas();
+        }
+    });
+
+    campoEdicion.focus();
+    campoEdicion.select();
+}
+
+function guardarEdicion(id, campoEdicion) {
+    const texto = campoEdicion.value.trim();
+    if (texto === "") {
+        campoEdicion.setCustomValidity("La tarea no puede quedar vacía.");
+        campoEdicion.reportValidity();
+        campoEdicion.setCustomValidity("");
+        campoEdicion.focus();
+        return;
+    }
+
+    const tarea = tareas.find((elemento) => elemento.id === id);
+    if (!tarea) {
+        return;
+    }
+
+    tarea.texto = texto;
+    guardarTareas();
+    renderizarTareas();
 }
 
 function cambiarEstadoTarea(id, completada, descripcion) {
