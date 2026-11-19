@@ -4,6 +4,7 @@
 const formulario = document.getElementById("formulario-tarea");
 const campoTarea = document.getElementById("nueva-tarea");
 const listaTareas = document.getElementById("lista-tareas");
+const resumenTareas = document.getElementById("resumen-tareas");
 const claveAlmacenamiento = "todolist-tareas";
 
 let tareasNecesitanMigracion = false;
@@ -160,6 +161,7 @@ function cambiarEstadoTarea(id, completada, descripcion) {
     tarea.completada = completada;
     descripcion.classList.toggle("todo__descripcion--completada", completada);
     guardarTareas();
+    actualizarContadores();
 }
 
 function renderizarTareas() {
@@ -167,6 +169,13 @@ function renderizarTareas() {
     tareas.forEach((tarea) => {
         listaTareas.appendChild(crearElementoTarea(tarea));
     });
+    actualizarContadores();
+}
+
+function actualizarContadores() {
+    const completadas = tareas.filter((tarea) => tarea.completada).length;
+    const pendientes = tareas.length - completadas;
+    resumenTareas.textContent = `Pendientes: ${pendientes} | Completadas: ${completadas}`;
 }
 
 function eliminarTarea(id, elemento) {
@@ -176,6 +185,7 @@ function eliminarTarea(id, elemento) {
         tareas.splice(indice, 1);
     }
     guardarTareas();
+    actualizarContadores();
 }
 
 /* Función para agregar una tarea */
@@ -193,6 +203,7 @@ function agregarTarea(evento) {
     tareas.push({ id: crearId(), texto, completada: false });
     guardarTareas();
     listaTareas.appendChild(crearElementoTarea(tareas[tareas.length - 1]));
+    actualizarContadores();
 
     // Limpiar el campo
     campoTarea.value = "";
