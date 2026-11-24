@@ -1,5 +1,7 @@
 # Taller DOM + API con Node.js y Express
 
+Hecho por Sayi Ramirez Y Giuliano Jaramillo
+
 ## ¿De qué trata el proyecto?
 
 Para este taller junté dos páginas que ya había trabajado: una lista de tareas y una lista de contactos. La idea era que no se quedaran solo funcionando con JavaScript en el navegador, sino conectarlas a una API hecha con Node.js y Express.
