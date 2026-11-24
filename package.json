@@ -1,0 +1,17 @@
+{
+  "name": "taller-dom-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Taller DOM con listas de tareas y contactos",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js"
+  },
+  "dependencies": {
+    "express": "^5.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
