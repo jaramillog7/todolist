@@ -5,44 +5,50 @@ const formulario = document.getElementById("formulario-tarea");
 const campoTarea = document.getElementById("nueva-tarea");
 const listaTareas = document.getElementById("lista-tareas");
 const resumenTareas = document.getElementById("resumen-tareas");
-const claveAlmacenamiento = "todolist-tareas";
+const mensajeError = document.createElement("p");
+mensajeError.setAttribute("role", "alert");
+mensajeError.hidden = true;
+formulario.after(mensajeError);
+let tareas = [];
+let operacionPendiente = false;
 
-let tareasNecesitanMigracion = false;
-let tareas = cargarTareas();
+async function solicitarTareas(ruta = "", metodo = "GET", datos) {
+    const response = await fetch(`/api/tareas${ruta}`, {
+        method: metodo,
+        ...(datos === undefined ? {} : {
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(datos)
+        })
+    });
+    if (!response.ok) {
+        throw new Error("No se pudo completar la solicitud.");
+    }
+    return response.status === 204 ? null : response.json();
+}
 
-function cargarTareas() {
+async function ejecutarOperacion(accion) {
+    if (operacionPendiente) return;
+    operacionPendiente = true;
+    mensajeError.hidden = true;
+    const controles = [...document.querySelectorAll("button, input")];
+    controles.forEach((control) => { control.disabled = true; });
     try {
-        const datosGuardados = localStorage.getItem(claveAlmacenamiento);
-        const tareasGuardadas = datosGuardados ? JSON.parse(datosGuardados) : [];
-
-        if (!Array.isArray(tareasGuardadas)) {
-            return [];
-        }
-
-        return tareasGuardadas
-            .filter((tarea) => tarea && typeof tarea.id === "string" && typeof tarea.texto === "string" && tarea.texto.trim() !== "")
-            .map((tarea) => {
-                if (typeof tarea.completada !== "boolean") {
-                    tareasNecesitanMigracion = true;
-                }
-
-                return {
-                    id: tarea.id,
-                    texto: tarea.texto,
-                    completada: tarea.completada === true
-                };
-            });
+        await accion();
     } catch (error) {
-        return [];
+        mensajeError.textContent = "No se pudo comunicar con el servidor. Los cambios no se confirmaron. Intenta de nuevo.";
+        mensajeError.hidden = false;
+    } finally {
+        controles.forEach((control) => { control.disabled = false; });
+        operacionPendiente = false;
     }
 }
 
-function guardarTareas() {
-    try {
-        localStorage.setItem(claveAlmacenamiento, JSON.stringify(tareas));
-    } catch (error) {
-        // La lista sigue disponible en memoria si el navegador bloquea el almacenamiento.
-    }
+async function cargarTareas() {
+    await ejecutarOperacion(async () => {
+        const recibidas = await solicitarTareas();
+        tareas = recibidas;
+        renderizarTareas();
+    });
 }
 
 function crearElementoTarea(tarea) {
@@ -60,7 +66,9 @@ function crearElementoTarea(tarea) {
     casillaCompletada.checked = tarea.completada;
     casillaCompletada.setAttribute("aria-label", `Marcar como completada: ${tarea.texto}`);
     casillaCompletada.addEventListener("change", function () {
-        cambiarEstadoTarea(tarea.id, casillaCompletada.checked, descripcion);
+        const completada = casillaCompletada.checked;
+        casillaCompletada.checked = tarea.completada;
+        cambiarEstadoTarea(tarea.id, completada);
     });
 
     const botonEditar = document.createElement("button");
@@ -134,7 +142,7 @@ function iniciarEdicion(id, elemento) {
 
 function guardarEdicion(id, campoEdicion) {
     const texto = campoEdicion.value.trim();
-    if (texto === "") {
+    if (texto === "" || texto.length > 100) {
         campoEdicion.setCustomValidity("La tarea no puede quedar vacía.");
         campoEdicion.reportValidity();
         campoEdicion.setCustomValidity("");
@@ -147,21 +155,21 @@ function guardarEdicion(id, campoEdicion) {
         return;
     }
 
-    tarea.texto = texto;
-    guardarTareas();
-    renderizarTareas();
+    ejecutarOperacion(async () => {
+        const actualizada = await solicitarTareas(`/${encodeURIComponent(id)}`, "PUT", { texto, completada: tarea.completada });
+        Object.assign(tarea, actualizada);
+        renderizarTareas();
+    });
 }
 
-function cambiarEstadoTarea(id, completada, descripcion) {
+function cambiarEstadoTarea(id, completada) {
     const tarea = tareas.find((elemento) => elemento.id === id);
-    if (!tarea) {
-        return;
-    }
-
-    tarea.completada = completada;
-    descripcion.classList.toggle("todo__descripcion--completada", completada);
-    guardarTareas();
-    actualizarContadores();
+    if (!tarea) return;
+    ejecutarOperacion(async () => {
+        const actualizada = await solicitarTareas(`/${encodeURIComponent(id)}`, "PUT", { texto: tarea.texto, completada });
+        Object.assign(tarea, actualizada);
+        renderizarTareas();
+    });
 }
 
 function renderizarTareas() {
@@ -178,46 +186,25 @@ function actualizarContadores() {
     resumenTareas.textContent = `Pendientes: ${pendientes} | Completadas: ${completadas}`;
 }
 
-function eliminarTarea(id, elemento) {
-    listaTareas.removeChild(elemento);
-    const indice = tareas.findIndex((tarea) => tarea.id === id);
-    if (indice !== -1) {
-        tareas.splice(indice, 1);
-    }
-    guardarTareas();
-    actualizarContadores();
+function eliminarTarea(id) {
+    ejecutarOperacion(async () => {
+        await solicitarTareas(`/${encodeURIComponent(id)}`, "DELETE");
+        tareas = tareas.filter((tarea) => tarea.id !== id);
+        renderizarTareas();
+    });
 }
-
-/* Función para agregar una tarea */
-
 
 function agregarTarea(evento) {
     evento.preventDefault();
-
     const texto = campoTarea.value.trim();
-
-    if (texto === "") {
-        return;
-    }
-
-    tareas.push({ id: crearId(), texto, completada: false });
-    guardarTareas();
-    listaTareas.appendChild(crearElementoTarea(tareas[tareas.length - 1]));
-    actualizarContadores();
-
-    // Limpiar el campo
-    campoTarea.value = "";
-    campoTarea.focus();
+    if (texto === "" || texto.length > 100) return;
+    ejecutarOperacion(async () => {
+        const nuevaTarea = await solicitarTareas("", "POST", { texto });
+        tareas.push(nuevaTarea);
+        renderizarTareas();
+        campoTarea.value = "";
+    }).then(() => campoTarea.focus());
 }
-
-/* Evento del formulario */
 
 formulario.addEventListener("submit", agregarTarea);
-if (tareasNecesitanMigracion) {
-    guardarTareas();
-}
-renderizarTareas();
-
-function crearId() {
-    return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
-}
+cargarTareas();

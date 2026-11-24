@@ -1,0 +1,224 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    min-height: 100dvh;
+    background: #d9bd53;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #44485f;
+}
+
+.contact-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: safe center;
+    width: calc(100% - 32px);
+    max-width: 600px;
+    min-height: 100vh;
+    min-height: 100dvh;
+    margin-inline: auto;
+    padding-block: clamp(14px, 2.5vh, 26px) 24px;
+}
+
+.contact-icon-wrapper {
+    flex: 0 0 auto;
+    width: clamp(150px, 20vw, 220px);
+    margin-bottom: clamp(18px, 3vh, 28px);
+}
+
+.contact-icon {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 12 / 13;
+}
+
+h1 {
+    width: 100%;
+    color: white;
+    font-size: clamp(27px, 4vw, 46px);
+    line-height: 1.15;
+    letter-spacing: 1px;
+    text-align: center;
+    margin-bottom: clamp(18px, 3vh, 28px);
+}
+
+#formMode {
+    width: 100%;
+    text-align: center;
+    overflow-wrap: anywhere;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 14px;
+}
+
+#contactForm {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    width: 100%;
+    max-width: 500px;
+}
+
+#contactForm > input {
+    width: 100%;
+    min-width: 0;
+    min-height: 46px;
+    padding: 12px;
+    border: 1px solid #e6e6e6;
+    border-radius: 5px;
+    background: white;
+    color: #44485f;
+    font: inherit;
+    font-size: clamp(16px, 1.8vw, 18px);
+}
+
+#contactForm > input::placeholder {
+    color: #65697a;
+    opacity: 1;
+}
+
+#address, .gender-options, #addButton, #cancelEdit {
+    grid-column: 1 / -1;
+}
+
+.gender-options {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px 24px;
+}
+
+.gender-options label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    cursor: pointer;
+}
+
+.gender-options input {
+    width: 19px;
+    height: 19px;
+    accent-color: #1677e8;
+}
+
+button {
+    min-height: 44px;
+    padding: 10px 16px;
+    border: 1px solid #e6e6e6;
+    border-radius: 5px;
+    background: #f7f7f7;
+    color: #55596d;
+    font: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    overflow-wrap: anywhere;
+}
+
+#addButton {
+    color: #44485f;
+}
+
+button:hover {
+    background: #ededed;
+}
+
+button:disabled {
+    opacity: 0.65;
+    cursor: wait;
+}
+
+button:focus-visible, input:focus-visible {
+    outline: 3px solid #44485f;
+    outline-offset: 3px;
+}
+
+#message {
+    width: 100%;
+    margin-top: 16px;
+    font-size: 16px;
+    line-height: 1.5;
+    text-align: center;
+    overflow-wrap: anywhere;
+}
+
+#message:empty {
+    display: none;
+}
+
+#contactsSection {
+    width: 100%;
+    margin-top: clamp(24px, 4vh, 36px);
+}
+
+#contactsSection h2 {
+    color: white;
+    font-size: clamp(22px, 2.8vw, 28px);
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+#contactsList {
+    display: grid;
+    gap: 14px;
+}
+
+.contact-card {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px 16px;
+    padding: clamp(16px, 2vw, 22px);
+    border-radius: 7px;
+    background: white;
+    line-height: 1.5;
+    font-size: clamp(16px, 1.8vw, 18px);
+    overflow-wrap: anywhere;
+}
+
+.contact-card p {
+    min-width: 0;
+}
+
+.contact-card p:first-child, .contact-card p:nth-child(2) {
+    font-weight: 700;
+}
+
+.contact-card button {
+    margin-top: 6px;
+}
+
+.delete-button {
+    background: #e46b6b;
+    border-color: transparent;
+    color: #fff;
+}
+
+.delete-button:hover {
+    background: #c94b4b;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+@media (max-width: 480px) {
+    #contactForm {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 12px;
+    }
+
+    .contact-card p {
+        grid-column: 1 / -1;
+    }
+
+    h1 {
+        font-size: clamp(27px, 7.8vw, 34px);
+    }
+}

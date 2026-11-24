@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact List</title>
+    <link rel="stylesheet" href="./styles.css">
+    <script src="./script.js" defer></script>
+</head>
+<body>
+    <main class="contact-container">
+
+        <div class="contact-icon-wrapper" aria-hidden="true">
+            <svg class="contact-icon" viewBox="0 0 240 260" role="presentation" focusable="false" xmlns="http://www.w3.org/2000/svg">
+                <g stroke="#111" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="12" y="12" width="98" height="104" rx="8" fill="#67acf4"/>
+                    <path d="M37 31 52 46 43 57c4 12 12 20 24 24l11-10 15 15-10 13c-5 6-14 6-22 2-20-9-35-25-40-44-2-8 1-15 6-20Z" fill="#f4b83f"/>
+                    <path d="m37 31 15 15-9 11-15-15m39 39 11-10 15 15-10 13" fill="#ff9d59"/>
+                    <rect x="130" y="12" width="98" height="104" rx="8" fill="#a9d2fa"/>
+                    <rect x="12" y="140" width="98" height="104" rx="8" fill="#67acf4"/>
+                    <rect x="28" y="164" width="66" height="52" rx="3" fill="#f4b83f"/>
+                    <path d="m29 166 32 27 32-27m-64 48 22-23m42 23-22-23" fill="none"/>
+                    <path d="M164 242v-14c-10-14-20-31-26-46-3-8 8-13 13-6l10 14v-79c0-12 17-12 17 0v51-16c0-11 16-11 16 0v19-13c0-11 16-11 16 0v16-9c0-11 16-11 16 0v43c0 12-5 19-9 26v14Z" fill="#ffb8a7"/>
+                    <path d="M178 162v22m16-19v19m16-16v16" fill="none"/>
+                </g>
+                <g fill="none" stroke="#111" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+                    <ellipse cx="178" cy="61" rx="10" ry="14"/>
+                    <path d="M188 48v24c0 13 20 11 20-9 0-23-12-36-30-36-20 0-33 15-33 35s13 34 33 34c9 0 16-2 22-6"/>
+                </g>
+            </svg>
+        </div>
+
+        <h1>Contact List</h1>
+
+        <p id="formMode" role="status">Add contact</p>
+        <form id="contactForm">
+            <input
+                type="text"
+                id="firstName"
+                aria-label="First name"
+                placeholder="Input your name"
+                required
+            >
+
+            <input
+                type="text"
+                id="lastName"
+                aria-label="Last name"
+                placeholder="Input your lastname"
+                required
+            >
+
+            <input
+                type="tel"
+                id="phone"
+                aria-label="Phone"
+                placeholder="Input your phone"
+                required
+            >
+
+            <input
+                type="text"
+                id="city"
+                aria-label="City"
+                placeholder="Input your city"
+                required
+            >
+
+            <input
+                type="text"
+                id="address"
+                aria-label="Address"
+                placeholder="Input your address"
+                required
+            >
+
+            <div class="gender-options">
+                <label>
+                    <input
+                        type="radio"
+                        name="gender"
+                        value="Female"
+                        required
+                    >
+                    Female
+                </label>
+
+                <label>
+                    <input
+                        type="radio"
+                        name="gender"
+                        value="Male"
+                    >
+                    Male
+                </label>
+            </div>
+
+            <button type="submit" id="addButton">ADD</button>
+            <button type="button" id="cancelEdit" hidden>Cancel editing</button>
+        </form>
+
+        <p id="message" role="status"></p>
+
+        <section id="contactsSection" hidden>
+            <h2>Saved Contacts</h2>
+            <div id="contactsList"></div>
+        </section>
+
+    </main>
+</body>
+</html>
