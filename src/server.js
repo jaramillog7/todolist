@@ -10,6 +10,13 @@ app.use(express.json());
 // Cada tarea tendrá id, texto y completada. Los datos viven en memoria.
 const tareas = [];
 
+// Campos de contacto: id, firstName, lastName, phone, city, address y gender.
+const contactos = [];
+
+app.get('/api/contactos', (req, res) => {
+    res.status(200).json(contactos);
+});
+
 app.get('/api/tareas', (req, res) => {
     res.status(200).json(tareas);
 });
