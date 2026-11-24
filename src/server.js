@@ -4,6 +4,13 @@ const path = require('path');
 const app = express();
 const PORT = 3000;
 
+// Cada tarea tendrá id, texto y completada. Los datos viven en memoria.
+const tareas = [];
+
+app.get('/api/tareas', (req, res) => {
+    res.status(200).json(tareas);
+});
+
 app.get('/', (req, res) => {
     res.redirect('/tareas/');
 });
