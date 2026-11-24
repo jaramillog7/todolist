@@ -17,6 +17,32 @@ app.get('/api/contactos', (req, res) => {
     res.status(200).json(contactos);
 });
 
+app.post('/api/contactos', (req, res) => {
+    const { firstName, lastName, phone, city, address, gender } = req.body ?? {};
+    const campos = [firstName, lastName, phone, city, address, gender];
+
+    if (campos.some((campo) => typeof campo !== 'string' || campo.trim() === '')) {
+        return res.status(400).json({ error: 'Todos los campos son obligatorios y deben ser texto.' });
+    }
+
+    if (!['Female', 'Male'].includes(gender.trim())) {
+        return res.status(400).json({ error: 'El género debe ser Female o Male.' });
+    }
+
+    const nuevoContacto = {
+        id: randomUUID(),
+        firstName: firstName.trim(),
+        lastName: lastName.trim(),
+        phone: phone.trim(),
+        city: city.trim(),
+        address: address.trim(),
+        gender: gender.trim()
+    };
+
+    contactos.push(nuevoContacto);
+    res.status(201).json(nuevoContacto);
+});
+
 app.get('/api/tareas', (req, res) => {
     res.status(200).json(tareas);
 });
