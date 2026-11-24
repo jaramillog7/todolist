@@ -50,6 +50,17 @@ app.put('/api/tareas/:id', (req, res) => {
     res.status(200).json(tarea);
 });
 
+app.delete('/api/tareas/:id', (req, res) => {
+    const indice = tareas.findIndex((tarea) => tarea.id === req.params.id);
+
+    if (indice === -1) {
+        return res.status(404).json({ error: 'Tarea no encontrada.' });
+    }
+
+    tareas.splice(indice, 1);
+    res.status(204).send();
+});
+
 app.get('/', (req, res) => {
     res.redirect('/tareas/');
 });
