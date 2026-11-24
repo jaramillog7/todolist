@@ -17,30 +17,56 @@ app.get('/api/contactos', (req, res) => {
     res.status(200).json(contactos);
 });
 
-app.post('/api/contactos', (req, res) => {
-    const { firstName, lastName, phone, city, address, gender } = req.body ?? {};
+function validarContacto(datos) {
+    const { firstName, lastName, phone, city, address, gender } = datos ?? {};
     const campos = [firstName, lastName, phone, city, address, gender];
 
     if (campos.some((campo) => typeof campo !== 'string' || campo.trim() === '')) {
-        return res.status(400).json({ error: 'Todos los campos son obligatorios y deben ser texto.' });
+        return 'Todos los campos son obligatorios y deben ser texto.';
     }
 
     if (!['Female', 'Male'].includes(gender.trim())) {
-        return res.status(400).json({ error: 'El género debe ser Female o Male.' });
+        return 'El g?nero debe ser Female o Male.';
     }
 
-    const nuevoContacto = {
-        id: randomUUID(),
-        firstName: firstName.trim(),
-        lastName: lastName.trim(),
-        phone: phone.trim(),
-        city: city.trim(),
-        address: address.trim(),
-        gender: gender.trim()
-    };
+    return null;
+}
 
+function prepararContacto(datos) {
+    return {
+        firstName: datos.firstName.trim(),
+        lastName: datos.lastName.trim(),
+        phone: datos.phone.trim(),
+        city: datos.city.trim(),
+        address: datos.address.trim(),
+        gender: datos.gender.trim()
+    };
+}
+
+app.post('/api/contactos', (req, res) => {
+    const error = validarContacto(req.body);
+    if (error) {
+        return res.status(400).json({ error });
+    }
+
+    const nuevoContacto = { id: randomUUID(), ...prepararContacto(req.body) };
     contactos.push(nuevoContacto);
     res.status(201).json(nuevoContacto);
+});
+
+app.put('/api/contactos/:id', (req, res) => {
+    const contacto = contactos.find((contacto) => contacto.id === req.params.id);
+    if (!contacto) {
+        return res.status(404).json({ error: 'Contacto no encontrado.' });
+    }
+
+    const error = validarContacto(req.body);
+    if (error) {
+        return res.status(400).json({ error });
+    }
+
+    Object.assign(contacto, prepararContacto(req.body));
+    res.status(200).json(contacto);
 });
 
 app.get('/api/tareas', (req, res) => {
