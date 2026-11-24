@@ -5,179 +5,220 @@
 }
 
 body {
-    background-color: #e4cb67;
-    font-family: Arial, sans-serif;
     min-height: 100vh;
+    min-height: 100dvh;
+    background: #d9bd53;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #44485f;
 }
 
 .contact-container {
-    width: 100%;
-    min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 18px;
-    padding-left: 15px;
-    padding-right: 15px;
-    padding-bottom: 40px;
+    justify-content: safe center;
+    width: calc(100% - 32px);
+    max-width: 600px;
+    min-height: 100vh;
+    min-height: 100dvh;
+    margin-inline: auto;
+    padding-block: clamp(14px, 2.5vh, 26px) 24px;
 }
 
 .contact-icon-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 150px;
-    min-height: 150px;
-    margin-bottom: 20px;
+    flex: 0 0 auto;
+    width: clamp(150px, 20vw, 220px);
+    margin-bottom: clamp(18px, 3vh, 28px);
 }
 
 .contact-icon {
-    width: 135px;
-    height: auto;
     display: block;
-    object-fit: contain;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 12 / 13;
 }
 
 h1 {
+    width: 100%;
     color: white;
-    font-family: Georgia, "Times New Roman", serif;
-    font-size: 28px;
-    font-weight: bold;
+    font-size: clamp(27px, 4vw, 46px);
+    line-height: 1.15;
+    letter-spacing: 1px;
     text-align: center;
-    margin-bottom: 28px;
+    margin-bottom: clamp(18px, 3vh, 28px);
+}
+
+#formMode {
+    width: 100%;
+    text-align: center;
+    overflow-wrap: anywhere;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 14px;
 }
 
 #contactForm {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
     width: 100%;
+    max-width: 500px;
 }
 
 #contactForm > input {
-    width: 240px;
-    max-width: 100%;
-    height: 24px;
-    padding: 0 8px;
-    border: none;
-    border-radius: 4px;
-    background-color: white;
-    color: #333;
-    font-size: 11px;
-    outline-color: #2f86f6;
+    width: 100%;
+    min-width: 0;
+    min-height: 46px;
+    padding: 12px;
+    border: 1px solid #e6e6e6;
+    border-radius: 5px;
+    background: white;
+    color: #44485f;
+    font: inherit;
+    font-size: clamp(16px, 1.8vw, 18px);
 }
 
 #contactForm > input::placeholder {
-    color: #8a8a8a;
+    color: #65697a;
+    opacity: 1;
+}
+
+#address, .gender-options, #addButton, #cancelEdit {
+    grid-column: 1 / -1;
 }
 
 .gender-options {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
-    gap: 14px;
-    margin-top: 3px;
-    margin-bottom: 2px;
-    color: white;
-    font-size: 11px;
+    gap: 12px 24px;
 }
 
 .gender-options label {
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 8px;
+    min-height: 44px;
     cursor: pointer;
 }
 
 .gender-options input {
-    width: 11px;
-    height: 11px;
-    accent-color: #2f86f6;
+    width: 19px;
+    height: 19px;
+    accent-color: #1677e8;
+}
+
+button {
+    min-height: 44px;
+    padding: 10px 16px;
+    border: 1px solid #e6e6e6;
+    border-radius: 5px;
+    background: #f7f7f7;
+    color: #55596d;
+    font: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    overflow-wrap: anywhere;
 }
 
 #addButton {
-    background-color: #2f86f6;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 6px 11px;
-    font-size: 11px;
-    cursor: pointer;
+    color: #44485f;
 }
 
-#addButton:hover {
-    background-color: #1f6fd4;
+button:hover {
+    background: #ededed;
+}
+
+button:disabled {
+    opacity: 0.65;
+    cursor: wait;
+}
+
+button:focus-visible, input:focus-visible {
+    outline: 3px solid #44485f;
+    outline-offset: 3px;
 }
 
 #message {
-    color: white;
-    font-size: 12px;
+    width: 100%;
+    margin-top: 16px;
+    font-size: 16px;
+    line-height: 1.5;
     text-align: center;
-    margin-top: 12px;
+    overflow-wrap: anywhere;
 }
 
-#contactsSection[hidden] {
+#message:empty {
     display: none;
 }
 
 #contactsSection {
     width: 100%;
-    max-width: 320px;
-    margin-top: 20px;
+    margin-top: clamp(24px, 4vh, 36px);
 }
 
 #contactsSection h2 {
     color: white;
+    font-size: clamp(22px, 2.8vw, 28px);
     text-align: center;
-    font-size: 18px;
-    margin-bottom: 12px;
+    margin-bottom: 16px;
+}
+
+#contactsList {
+    display: grid;
+    gap: 14px;
 }
 
 .contact-card {
-    background-color: white;
-    border-radius: 5px;
-    padding: 12px;
-    margin-bottom: 10px;
-    font-size: 12px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px 16px;
+    padding: clamp(16px, 2vw, 22px);
+    border-radius: 7px;
+    background: white;
+    line-height: 1.5;
+    font-size: clamp(16px, 1.8vw, 18px);
     overflow-wrap: anywhere;
 }
 
 .contact-card p {
-    margin-bottom: 5px;
+    min-width: 0;
+}
+
+.contact-card p:first-child, .contact-card p:nth-child(2) {
+    font-weight: 700;
+}
+
+.contact-card button {
+    margin-top: 6px;
 }
 
 .delete-button {
-    background-color: #df3737;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 6px 10px;
-    margin-top: 7px;
-    cursor: pointer;
-}
-#formMode {
-    max-width: 100%;
-    overflow-wrap: anywhere;
-    text-align: center;
-    color: #333;
-    font-size: 13px;
-    margin-bottom: 10px;
+    background: #e46b6b;
+    border-color: transparent;
+    color: #fff;
 }
 
-.edit-button, #cancelEdit {
-    padding: 6px 10px;
-    border: 1px solid #777;
-    border-radius: 4px;
-    background: #f7f7f7;
-    color: #333;
-    cursor: pointer;
+.delete-button:hover {
+    background: #c94b4b;
 }
 
-.edit-button {
-    margin-right: 8px;
+[hidden] {
+    display: none !important;
 }
 
-button:focus-visible {
-    outline: 2px solid #174d96;
-    outline-offset: 2px;
+@media (max-width: 480px) {
+    #contactForm {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 12px;
+    }
+
+    .contact-card p {
+        grid-column: 1 / -1;
+    }
+
+    h1 {
+        font-size: clamp(27px, 7.8vw, 34px);
+    }
 }
