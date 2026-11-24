@@ -26,7 +26,7 @@ function validarContacto(datos) {
     }
 
     if (!['Female', 'Male'].includes(gender.trim())) {
-        return 'El g?nero debe ser Female o Male.';
+        return 'El género debe ser Female o Male.';
     }
 
     return null;
