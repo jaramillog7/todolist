@@ -31,6 +31,25 @@ app.post('/api/tareas', (req, res) => {
     res.status(201).json(nuevaTarea);
 });
 
+app.put('/api/tareas/:id', (req, res) => {
+    const tarea = tareas.find((tarea) => tarea.id === req.params.id);
+
+    if (!tarea) {
+        return res.status(404).json({ error: 'Tarea no encontrada.' });
+    }
+
+    const texto = req.body?.texto;
+    const completada = req.body?.completada;
+
+    if (typeof texto !== 'string' || texto.trim() === '' || texto.trim().length > 100 || typeof completada !== 'boolean') {
+        return res.status(400).json({ error: 'Envía texto de 1 a 100 caracteres y completada como booleano.' });
+    }
+
+    tarea.texto = texto.trim();
+    tarea.completada = completada;
+    res.status(200).json(tarea);
+});
+
 app.get('/', (req, res) => {
     res.redirect('/tareas/');
 });
