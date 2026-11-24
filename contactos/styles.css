@@ -155,3 +155,29 @@ h1 {
     margin-top: 7px;
     cursor: pointer;
 }
+#formMode {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    text-align: center;
+    color: #333;
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+.edit-button, #cancelEdit {
+    padding: 6px 10px;
+    border: 1px solid #777;
+    border-radius: 4px;
+    background: #f7f7f7;
+    color: #333;
+    cursor: pointer;
+}
+
+.edit-button {
+    margin-right: 8px;
+}
+
+button:focus-visible {
+    outline: 2px solid #174d96;
+    outline-offset: 2px;
+}

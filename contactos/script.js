@@ -5,6 +5,41 @@ const contactsSection = document.getElementById("contactsSection");
 
 let contacts = [];
 let operationPending = false;
+let editingId = null;
+const formMode = document.getElementById("formMode");
+const addButton = document.getElementById("addButton");
+const cancelEdit = document.getElementById("cancelEdit");
+
+function resetEditing() {
+    editingId = null;
+    contactForm.reset();
+    formMode.textContent = "Add contact";
+    addButton.textContent = "ADD";
+    cancelEdit.hidden = true;
+}
+
+cancelEdit.addEventListener("click", () => {
+    if (operationPending) return;
+    resetEditing();
+    message.textContent = "";
+    document.getElementById("firstName").focus();
+});
+
+function editContact(contact) {
+    if (operationPending) return;
+    editingId = contact.id;
+    for (const field of ["firstName", "lastName", "phone", "city", "address"]) {
+        document.getElementById(field).value = contact[field];
+    }
+    contactForm.querySelectorAll('input[name="gender"]').forEach(input => {
+        input.checked = input.value === contact.gender;
+    });
+    formMode.textContent = `Editing contact: ${contact.firstName} ${contact.lastName}`;
+    addButton.textContent = "SAVE CHANGES";
+    cancelEdit.hidden = false;
+    message.textContent = "";
+    document.getElementById("firstName").focus();
+}
 
 async function requestContacts(route = "", method = "GET", data) {
     const response = await fetch(`/api/contactos${route}`, {
@@ -57,6 +92,14 @@ function displayContacts() {
             card.appendChild(paragraph);
         });
 
+        const editButton = document.createElement("button");
+        editButton.type = "button";
+        editButton.textContent = "Edit";
+        editButton.className = "edit-button";
+        editButton.setAttribute("aria-label", `Edit contact: ${contact.firstName} ${contact.lastName}`);
+        editButton.addEventListener("click", () => editContact(contact));
+        card.appendChild(editButton);
+
         const deleteButton = document.createElement("button");
         deleteButton.textContent = "Delete";
         deleteButton.className = "delete-button";
@@ -64,6 +107,7 @@ function displayContacts() {
         deleteButton.addEventListener("click", () => {
             runOperation(async () => {
                 await requestContacts(`/${encodeURIComponent(contact.id)}`, "DELETE");
+                if (editingId === contact.id) resetEditing();
                 contacts = contacts.filter(item => item.id !== contact.id);
                 displayContacts();
             });
@@ -103,15 +147,21 @@ contactForm.addEventListener("submit", function (event) {
     }
 
     runOperation(async () => {
-        const createdContact = await requestContacts("", "POST", newContact);
-        contacts.push(createdContact);
+        const id = editingId;
+        const savedContact = await requestContacts(id ? `/${encodeURIComponent(id)}` : "", id ? "PUT" : "POST", newContact);
+        if (id) {
+            contacts = contacts.map(contact => contact.id === id ? savedContact : contact);
+        } else {
+            contacts.push(savedContact);
+        }
         displayContacts();
-        contactForm.reset();
-        message.textContent = "Contact added successfully!";
+        resetEditing();
+        message.textContent = id ? "Contact updated successfully!" : "Contact added successfully!";
     });
 });
 
-displayContacts();runOperation(async () => {
+displayContacts();
+runOperation(async () => {
     const receivedContacts = await requestContacts();
     contacts = receivedContacts;
     displayContacts();
