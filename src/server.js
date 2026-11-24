@@ -69,6 +69,17 @@ app.put('/api/contactos/:id', (req, res) => {
     res.status(200).json(contacto);
 });
 
+app.delete('/api/contactos/:id', (req, res) => {
+    const indice = contactos.findIndex((contacto) => contacto.id === req.params.id);
+
+    if (indice === -1) {
+        return res.status(404).json({ error: 'Contacto no encontrado.' });
+    }
+
+    contactos.splice(indice, 1);
+    res.status(204).send();
+});
+
 app.get('/api/tareas', (req, res) => {
     res.status(200).json(tareas);
 });
